@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гитарные педали для песен</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Иконки Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        .song-item {
+            transition: all 0.2s;
+            border-left: 4px solid transparent;
+            margin-bottom: 8px;
+        }
+        .song-item:hover {
+            background-color: #f8f9fa;
+            border-left-color: #0d6efd;
+        }
+        .search-box {
+            max-width: 500px;
+            margin: 0 auto 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка -->
+    <header class="bg-dark text-white py-4 mb-4">
+        <div class="container">
+            <div class="text-center">
+                <h1><i class="bi bi-music-note-list"></i> PedalBoard Songs</h1>
+                <p class="mb-0">Найдите нужные педали для исполнения песен в оригинальном звучании</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Основное содержимое -->
+    <main class="container">
+        <!-- Строка поиска -->
+        <div class="search-box">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Поиск песен..." aria-label="Поиск песен">
+                <button class="btn btn-primary" type="button"><i class="bi bi-search"></i></button>
+            </div>
+        </div>
+
+        <h5 class="mb-1">{{ song.title }}</h5>
+
+        <div class="list-group">
+
+            <a href="#" class="list-group-item list-group-item-action song-item">
+                <div class="d-flex w-100 justify-content-between">
+                    
+                    <small class="text-muted">{{ group.name }}</small>
+                </div>
+            </a>
+            
+            {% for song in songs %}
+            <a href="{% url 'song_detail' song_id=song.id %}" class="list-group-item list-group-item-action song-item">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ song.title }}</h5>
+                    <small class="text-muted">{{ song.group.name }}</small>
+                </div>
+            </a>
+
+            {% endfor %}
+
+        </div>
+    </main>
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

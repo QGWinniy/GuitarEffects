@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypass
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  web:
+    build:
+      context: .
+    container_name: django-app
+    command: >
+      sh -c "
+        echo '🕓 Ждём, пока PostgreSQL проснётся...' &&
+        until pg_isready -h db -p 5432; do sleep 1; done &&
+        echo '✅ PostgreSQL поднят, запускаем Django!' &&
+        python manage.py migrate &&
+        python manage.py runserver 0.0.0.0:8000
+      "
+    environment:
+      DB_NAME: mydb
+      DB_USER: myuser
+      DB_PASS: mypass
+      DB_HOST: db
+    volumes:
+      - ./app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    working_dir: /app
+
+volumes:
+  pgdata:
